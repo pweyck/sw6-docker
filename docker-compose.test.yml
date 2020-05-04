@@ -1,0 +1,19 @@
+version: "3.3"
+services:
+    sut:
+        build: .
+        entrypoint: ['sh', '/tests/unit.sh']
+        depends_on:
+            - mysql
+        environment:
+            - DATABASE_URL=mysql://root:root@mysql:3306/sw6
+            - APP_URL=http://localhost:8000
+            - INSTANCE_ID=
+            - SHOPWARE_CDN_STRATEGY_DEFAULT=id
+            - MAILER_URL=smtp://localhost:25?encryption=&auth_mode=
+    mysql:
+        image: mysql:8
+        environment:
+            - MYSQL_ROOT_PASSWORD=root
+        tmpfs:
+            - /var/run/mysqld:uid=999,gid=999

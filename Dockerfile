@@ -7,6 +7,8 @@ RUN wget --quiet http://releases.shopware.com/sw6/install_6.2_next.tar.xz -O ins
  && rm install.tar.xz \
  && chown www-data:www-data -R .
 
+ADD root /
+
 EXPOSE 8000
 
 ENTRYPOINT [ "/bin/entrypoint.sh" ]
