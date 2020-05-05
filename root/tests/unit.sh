@@ -21,11 +21,12 @@ phpConnTest=$(cat <<'PHPDOC'
 include "vendor/autoload.php";
 $u = explode("/", $_SERVER["DATABASE_URL"]);
 
-for ($i=0; $i< 10; ++$i) {
+for ($i=0; $i < 120; ++$i) {
     try {
         \Doctrine\DBAL\DriverManager::getConnection(["url" => $u[0] . "//" . $u[2]])->connect();
         exit(0);
     } catch (\Throwable $e) {
+	printf(".");
         sleep(1);
     }
 }
