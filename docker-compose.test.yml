@@ -5,15 +5,24 @@ services:
         entrypoint: ['sh', '/tests/unit.sh']
         depends_on:
             - mysql
+            - elasticsearch
         environment:
             - DATABASE_URL=mysql://root:root@mysql:3306/sw6
             - APP_URL=http://localhost:8000
             - INSTANCE_ID=
             - SHOPWARE_CDN_STRATEGY_DEFAULT=id
             - MAILER_URL=smtp://localhost:25?encryption=&auth_mode=
+            - BLUE_GREEN_DEPLOYMENT=1
+            - SHOPWARE_ES_ENABLED=1
+            - SHOPWARE_ES_HOSTS=elasticsearch:9200
+            - SHOPWARE_ES_INDEXING_ENABLED=1
+            - SHOPWARE_ES_INDEX_PREFIX=sw
     mysql:
         image: mysql:8.0.19
         environment:
             - MYSQL_ROOT_PASSWORD=root
         tmpfs:
             - /var/run/mysqld:uid=999,gid=999
+    elasticsearch:
+        image: elastic/elasticsearch:7.1.1
+        command: [ "bin/elasticsearch", "-Expack.security.enabled=false", "-Ediscovery.type=single-node" ]
